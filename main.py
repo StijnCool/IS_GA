@@ -1,6 +1,6 @@
 # pee pee poo poo
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import random
 
 
@@ -38,7 +38,11 @@ def fitness(population, values, weights, weight_limit):
 
 def elitist_selection(population, values, weights, weight_limit, r):
     fitness_scores = fitness(population, values, weights, weight_limit)
-    sorted_population = [population for fitness_scores, population in sorted(zip(fitness_scores, population))]
+    ids = list(range(0,len(population)))
+    sorted_ids = [ids for fitness_scores, ids in sorted(zip(fitness_scores, ids))]
+    sorted_population = []
+    for id in sorted_ids:
+        sorted_population.append(population[id])
     return sorted_population[-r:]
 
 
@@ -73,7 +77,6 @@ def iteration(population, values, weights, weight_limit, population_size, Prm, P
     population_new = selection_p
     while len(population_new) <= population_size:
         population_new.append(population[np.random.randint(0, population_size - 1)])
-    print(type(population_new))
     population_new = crossover(population_new, Prc, population_size)
     population_new = mutation(population_new, Prm)
     return population_new
@@ -81,19 +84,23 @@ def iteration(population, values, weights, weight_limit, population_size, Prm, P
 
 if __name__ == '__main__':
     min_weight = 1
-    max_weight = 10
+    max_weight = 3
     min_value = 1
-    max_value = 10
-    instances = 10
+    max_value = 20
+    instances = 100
     weights = np.random.uniform(min_weight, max_weight, instances)
     values = np.random.uniform(min_value, max_value, instances)
-    weight_limit = 30
-    Prm = 0.1
+    weight_limit = 200
+    Prm = 0.001
     Prc = 0.1
 
-    population_size = 10
+    population_size = 100
     population = generate_population(population_size, weights, weight_limit)
 
-    for i in range(0, 300):
-        iteration(population, values, weights, weight_limit, population_size, Prm, Prc)
-        print(value_from_individual(elitist_selection(population, values, weights, weight_limit, 1)[0], values))
+    scores = []
+    for i in range(0, 1000):
+        population = iteration(population, values, weights, weight_limit, population_size, Prm, Prc)
+        scores.append(value_from_individual(elitist_selection(population, values, weights, weight_limit, 1)[0], values))
+
+    plt.plot(scores)
+    plt.show()
