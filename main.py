@@ -94,12 +94,12 @@ if __name__ == '__main__':
     Prm = 0.001
     Prc = 0.1
 
-    population_size = 100
+    population_size = 300
     population = generate_population(population_size, weights, weight_limit)
 
     scores = []
-    for i in range(0, 1000):
-        population = iteration(population, values, weights, weight_limit, population_size, Prm, Prc)
+    for i in range(0, 1001):
+        population = iteration(population, values, weights, weight_limit, population_size, 1/(10*i+1), Prc)
         scores.append(value_from_individual(elitist_selection(population, values, weights, weight_limit, 1)[0], values))
         if i % 100 == 0:
             print("Gen " + str(i) + ": " + str(scores[-1]))
