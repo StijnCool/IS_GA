@@ -1,4 +1,3 @@
-# pee pee poo poo
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -101,8 +100,7 @@ if __name__ == '__main__':
     for i in range(0, 1001):
         population = iteration(population, values, weights, weight_limit, population_size, 1/(10*i+1), Prc)
         scores.append(value_from_individual(elitist_selection(population, values, weights, weight_limit, 1)[0], values))
-        if i % 100 == 0:
-            print("Gen " + str(i) + ": " + str(scores[-1]))
+
 
     #plt.plot(scores)
     #plt.show()
